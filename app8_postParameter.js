@@ -21,7 +21,7 @@ app.use((req, res, next) => {
     var userAgent = req.header("User-Agent");
     var paramId = req.body.id || req.query.id; //post or get -> from 태그안에 input 의 name="id" 값에 저장 된 값으로 땀
 
-    res.send(`<h3>respon from server User-Agent -> ${userAgent}</h3><h3>ParamName -> ${paramId}</h3>`)
+    res.send(`<h3>response from server User-Agent -> ${userAgent}</h3><h3>ParamName -> ${paramId}</h3>`)
 });
 
 
