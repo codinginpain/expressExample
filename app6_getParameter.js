@@ -11,7 +11,7 @@ app.use(function(req, res, next) {
    var userAgent = req.header(`User-Agent`);
    var paramName = req.query.name; 
 
-   res.send(`<h3>respon from server. User-Agent: ${userAgent}</h3><h3>Param Name -> ${paramName}</h3>`);
+   res.send(`<h3>response from server. User-Agent: ${userAgent}</h3><h3>Param Name -> ${paramName}</h3>`);
 });
 
 var server = http.createServer(app).listen(app.get(`port`), function() {
