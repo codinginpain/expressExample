@@ -39,8 +39,10 @@ router.route(`/product`).get((req, res) => {
     console.log(`/product routing fn called`);
 
     if(req.session.user) {
-        res.redirect(`/roduct.html`);
+        console.log("세션 있음");
+        res.redirect(`/product.html`);
     }else {
+        console.log("세션 없음");
         res.redirect(`/login2.html`);
     }
 });
@@ -65,7 +67,7 @@ router.route(`/login`).post((req, res) => {
         res.writeHead(200, {"Content-Type":"text/html;charset=utf8"});
         res.write(`<h1>로그인 성공</h1>`);
         res.write(`<p>id : ${paramId}</p>`);
-        res.write(`<br><br><a href="/product.html">상품 페이지로 이동하기</a>`);
+        res.write(`<br><br><a href="/product">상품 페이지로 이동하기</a>`);
         res.end();
     }
 });
