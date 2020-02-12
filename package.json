@@ -6,7 +6,8 @@
   "dependencies": {
     "cookie-parser": "^1.4.4",
     "express": "^4.17.1",
-    "express-error-handler": "^1.1.0"
+    "express-error-handler": "^1.1.0",
+    "express-session": "^1.17.0"
   },
   "devDependencies": {},
   "scripts": {
