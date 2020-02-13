@@ -13,7 +13,7 @@ var errorHandler = expressErrorHandler({
     }
 })
 
-var app= express();
+var app = express();
 
 app.set(`port`, process.env.PORT || 3000);
 app.use(static(path.join(__dirname, `public`)));
