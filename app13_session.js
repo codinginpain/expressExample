@@ -91,7 +91,7 @@ router.route(`/logout`).get((req, res) => {
     }
 });
 
-router.route(`/setUserCookie/`).post((req, res) => {
+router.route(`/setUserCookie`).post((req, res) => {
     console.log(`setUserCookie routing fn called`);
 
     res.cookie(`user`, {
