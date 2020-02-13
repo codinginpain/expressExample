@@ -1,6 +1,9 @@
+// npm install multer --save
+// npm install cors --save
+
 var express = require(`express`);
 var http = require(`http`);
-var static = require(`serve-statc`);
+var static = require(`serve-static`);
 var path = require(`path`);
 var expressErrorHandler = require(`express-error-handler`);
 
@@ -22,15 +25,15 @@ var errorHandler = expressErrorHandler({
 var app = express();
 
 app.set(`port`, process.env.PORT || 3000);
-app.use(static(path.join(__dirname, `public`)));
-app.use(`/upload`, static(path.join(__dirname, `uploads`))); //_dirname -> 현재 폴더
+app.use(static(path.join(__dirname, `public`))); // static 모듈을 이용해 폴더를 오픈해 놓음(접근가능)
+app.use(`/upload`, static(path.join(__dirname, `uploads`))); //_dirname -> 현재 폴더 -> 현재 폴더경로 + uploads 한걸로 적용 되므로 /upload만 치면 거기로 이동함
 
 app.use(bodyParser.urlencoded({extended:false}));
 app.use(bodyParser.json());
 
 app.use(cookieParser());
 app.use(expressSession({
-    scret:'my key',
+    secret:'my key',
     resave:true,
     saveUninitialized:true
 }));
@@ -41,12 +44,12 @@ var storage = multer.diskStorage({
     destination: function(req, file, callback) { //multer 문법
         callback(null, `uploads`);
     },
-    filename,function(req, file, callback) {
+    filename: function(req, file, callback) {
         // callback(null, `${file.originalname}${Date.now()}`); 책의 예제는 이렇게 되어있지만 원본 이름과 확장자 명을 살리기 위해 아래처럼
 
         var extension = path.extname(file.originalname); //확장자만
         var basename = path.basename(file.originalname, extension); //이름만
-        callback(null, basename+Date.now()+extension);
+        callback(null, basename+Date.now()+extension); //새 파일 이름
     }
 }); 
 
@@ -60,7 +63,41 @@ var upload = multer({
 
 var router = express.Router();
 
-router.route(`/[roduct`).get((req, res) => {
+router.route(`/photo`).post(upload.array(`photo`, 1), 
+    (req, res) => {
+        console.log(`/photo routing fn called`);
+
+        var files = req.files;
+        console.log(`====== uploaded file =======`);
+        if(files.length > 0) {
+            console.dir(files);
+            console.dir(files[0]);
+        }else {
+            console.log(`파일이 없습니다`);
+        }
+
+        var originalname;
+        var filename;
+        var mimetype;
+        var size;
+        if(Array.isArray(files)) { //배열인지 확인
+            for(var i=0; i<files.length; i++) {
+                console.log("for문 ");
+                originalname = files[i].originalname;
+                filename = files[i].filename;
+                mimetype = files[i].mimetype;
+                size = files[i].size;
+            }
+        }
+
+        res.writeHead(200, {"Content-Type":"text/html;charset=utf8"});
+        res.write(`<h1>file uplad success</h1>`);
+        res.write(`<p>original file : ${originalname}</p>`);
+        res.write(`<p>saved filename : ${filename}</p>`);
+        res.end();
+});
+
+router.route(`/roduct`).get((req, res) => {
     console.log(`/product routing fn called`);
 
     if(req.session.user) {
